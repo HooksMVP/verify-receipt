@@ -46,6 +46,17 @@ include:
       root_fingerprint: sha256:...
 ```
 
+**Not yet verified against a real GitLab pipeline.** The `spec:inputs`/
+`$[[ inputs.x ]]` syntax above is documented for `include:` generally, but
+GitLab's own docs don't show an explicit example combining plain
+`include: remote:` (an external URL) with `spec:inputs` the way this file
+uses it — only the GitHub Actions path above has actually been run and
+confirmed green. If the parameterized include doesn't behave as expected
+in your pipeline, `curl` this file's `verify_receipt.py` directly and call
+it with plain shell variables instead — no `include:` mechanism required.
+[Open an issue](../../issues) if you try this and it doesn't work as
+documented; that will get it fixed and tested for real.
+
 ### Local
 
 ```sh
