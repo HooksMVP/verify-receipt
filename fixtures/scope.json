@@ -1,0 +1,1 @@
+{"scope_id":"demo-pr-review","allowed_tools":["repository.read"],"denied_tools":["shell.exec"]}

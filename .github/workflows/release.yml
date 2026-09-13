@@ -1,0 +1,49 @@
+name: release
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # to attach the bundle and notes to the GitHub release
+  id-token: write # for cosign's keyless OIDC signing — no stored key exists
+
+jobs:
+  sign-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: sigstore/cosign-installer@v3
+
+      - name: Sign the release artifacts (keyless, logged to the public Rekor transparency log)
+        run: |
+          set -euo pipefail
+          cosign sign-blob --yes \
+            --bundle action.yml.cosign.bundle \
+            action.yml
+          cosign sign-blob --yes \
+            --bundle verify_receipt.py.cosign.bundle \
+            verify_receipt.py
+
+      - name: Verify the signatures before publishing them
+        run: |
+          set -euo pipefail
+          cosign verify-blob \
+            --bundle action.yml.cosign.bundle \
+            --certificate-identity-regexp "^https://github.com/${{ github.repository }}/" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            action.yml
+          cosign verify-blob \
+            --bundle verify_receipt.py.cosign.bundle \
+            --certificate-identity-regexp "^https://github.com/${{ github.repository }}/" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            verify_receipt.py
+
+      - name: Publish the release with the signature bundles attached
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            action.yml.cosign.bundle
+            verify_receipt.py.cosign.bundle
+          generate_release_notes: true

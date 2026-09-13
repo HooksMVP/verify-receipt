@@ -1,0 +1,71 @@
+# Same contract as the GitHub Action in this repository: pinned Python
+# verifier, not the Go binary. Incomplete receipts fail unless
+# allow_incomplete is true; a change-bound receipt with no commit_coverage
+# block fails as coverage-unevaluated unless allow_unevaluated is true.
+#
+# include:
+#   - remote: https://raw.githubusercontent.com/HooksMVP/verify-receipt/v1/gitlab-ci.yml
+#     inputs:
+#       packet: receipt.json
+#       trust_root: keys.json
+#       root_fingerprint: sha256:...
+#       allow_incomplete: "false"
+#       allow_unevaluated: "false"
+
+spec:
+  inputs:
+    previous_packet:
+      type: string
+      default: ""
+      description: Optional predecessor receipt for revision-chain verification
+    packet:
+      type: string
+      description: Path to the receipt JSON
+    trust_root:
+      type: string
+      description: Path to the signed keys.json directory
+    root_fingerprint:
+      type: string
+      description: sha256:HEX pin of the offline root public key
+    allow_incomplete:
+      type: string
+      default: "false"
+      description: If true, a verified evidence_incomplete receipt exits 0
+    allow_unevaluated:
+      type: string
+      default: "false"
+      description: If true, a verified but coverage-unevaluated receipt exits 0
+    python_image:
+      type: string
+      default: python:3.12-slim
+    verifier_version:
+      type: string
+      default: v1
+      description: Tag of HooksMVP/verify-receipt to fetch verify_receipt.py from
+
+---
+verify-receipt:
+  stage: test
+  image: $[[ inputs.python_image ]]
+  variables:
+    RECEIPT_PREVIOUS: $[[ inputs.previous_packet ]]
+  script:
+    - python3 -m pip install --quiet 'cryptography>=42'
+    - curl -fsSL -o verify_receipt.py "https://raw.githubusercontent.com/HooksMVP/verify-receipt/$[[ inputs.verifier_version ]]/verify_receipt.py"
+    - |
+      set -euo pipefail
+      extra=()
+      if [ -n "$RECEIPT_PREVIOUS" ]; then
+        extra+=(--previous-packet "$RECEIPT_PREVIOUS")
+      fi
+      if [ "$[[ inputs.allow_incomplete ]]" = "true" ]; then
+        extra+=(--allow-incomplete)
+      fi
+      if [ "$[[ inputs.allow_unevaluated ]]" = "true" ]; then
+        extra+=(--allow-unevaluated)
+      fi
+      python3 verify_receipt.py \
+        --packet "$[[ inputs.packet ]]" \
+        --trust-root "$[[ inputs.trust_root ]]" \
+        --root-fingerprint "$[[ inputs.root_fingerprint ]]" \
+        "${extra[@]}"

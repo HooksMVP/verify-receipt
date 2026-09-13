@@ -1,0 +1,126 @@
+{
+  "version": "chokepoint.flight-recorder/v1",
+  "tenant_id": "tenant_demo_7ca9",
+  "session_id": "session-complete-001",
+  "change": {
+    "commit_coverage": {
+      "list_complete": true,
+      "commits": [
+        {
+          "sha": "0123456789abcdef0123456789abcdef01234567",
+          "state": "observed"
+        }
+      ],
+      "listed_count": 1
+    },
+    "repository_id": "repo_demo_42",
+    "commit_sha": "ffffffffffffffffffffffffffffffffffffffff",
+    "pull_request_number": 42
+  },
+  "authorization": {
+    "scope_id": "demo-pr-review",
+    "scope_digest": "945603dc91d727adc74504e23a2ad634548d8e6101acb1796b61150888c0ecea",
+    "granted_at": "2026-09-08T08:59:00Z",
+    "enforcement_state": "enforced",
+    "decisions": [
+      {
+        "tool_call_id": "call-read",
+        "decision": "allow",
+        "within_scope": true
+      },
+      {
+        "tool_call_id": "call-shell",
+        "decision": "block",
+        "within_scope": false
+      }
+    ]
+  },
+  "agent_id": "agent_demo_reviewer",
+  "agent_type": "coding-agent",
+  "provider": "demo",
+  "started_at": "2026-09-08T09:00:00Z",
+  "last_activity": "2026-09-08T09:07:00Z",
+  "coverage_state": "complete",
+  "coverage_gaps": [],
+  "event_digests": [
+    {
+      "id": "complete-1",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:00:00Z",
+      "actor": "agent",
+      "event_type": "run.started",
+      "sha256": "50715e3064ecf86f66ac33f3ace5a3608bc9f4139f54e2c96c0f3af0d1ce432f"
+    },
+    {
+      "id": "complete-2",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:01:00Z",
+      "actor": "agent",
+      "event_type": "tool.requested",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-read",
+      "sha256": "3af1e206f77090bdbcb13ffa8963f1df936506819c688142578ab8cc1af6512a"
+    },
+    {
+      "id": "complete-3",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:02:00Z",
+      "actor": "agent",
+      "event_type": "tool.decided",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-read",
+      "sha256": "35bcf1c62249cdfdd01915403ccbaa71341c71a9b5b65634c73d2fda98a1a9a7"
+    },
+    {
+      "id": "complete-4",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:03:00Z",
+      "actor": "agent",
+      "event_type": "tool.completed",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-read",
+      "sha256": "6dc052ff8ab75c1972ee14c9591f0df28171e33abef80390cce00c86029b2fb0"
+    },
+    {
+      "id": "complete-5",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:04:00Z",
+      "actor": "agent",
+      "event_type": "tool.requested",
+      "tool_name": "shell.exec",
+      "tool_call_id": "call-shell",
+      "sha256": "0942af0dc04d837df0e1c90f33b1daee7288db63ad05499c7192150e63efb1bf"
+    },
+    {
+      "id": "complete-6",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:05:00Z",
+      "actor": "agent",
+      "event_type": "tool.decided",
+      "tool_name": "shell.exec",
+      "tool_call_id": "call-shell",
+      "sha256": "a02c2c5eadce0c96d76a0225d155d5776291ea4ecae750e087cf2a9200ee51da"
+    },
+    {
+      "id": "complete-7",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:06:00Z",
+      "actor": "agent",
+      "event_type": "tool.not_executed",
+      "tool_name": "shell.exec",
+      "tool_call_id": "call-shell",
+      "sha256": "23d92daa5cde1fa7c61f203f7b88e1838523a68aedee78c79167d627f5aed6d7"
+    },
+    {
+      "id": "complete-8",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:07:00Z",
+      "actor": "agent",
+      "event_type": "run.completed",
+      "sha256": "ae9f399d710ee6b305b5b89c85afdd2cac8d07891d4751a709d443238a41b02b"
+    }
+  ],
+  "integrity_root": "b13b0e6fed3a6885ae06b1213bd5ed18a7fcde21a8fb102537ed62cddee219c1",
+  "signer_key_id": "demo-ed25519-v1",
+  "signature": "Af4TFQ7y851aira5CRO+QAaBjoFe8+eS18CsJuUrNH1g6IcWm2zf92WdagBVIyYA2W7oKEPRsDHdEF7REF54Cw=="
+}

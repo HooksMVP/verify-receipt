@@ -1,0 +1,60 @@
+{
+  "version": "chokepoint.flight-recorder/v1",
+  "tenant_id": "tenant_demo_7ca9",
+  "session_id": "session-unevaluated-001",
+  "change": {
+    "repository_id": "repo_demo_42",
+    "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+    "pull_request_number": 42
+  },
+  "agent_id": "agent_demo_reviewer",
+  "agent_type": "coding-agent",
+  "provider": "demo",
+  "started_at": "2026-09-08T09:00:00Z",
+  "last_activity": "2026-09-08T09:03:00Z",
+  "coverage_state": "complete",
+  "coverage_gaps": [],
+  "event_digests": [
+    {
+      "id": "unevaluated-1",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:00:00Z",
+      "actor": "agent",
+      "event_type": "run.started",
+      "sha256": "a7f73d89789bf16443bda29be3c2653cbd3db1ffb26554c08075eff66ca20d22"
+    },
+    {
+      "id": "unevaluated-2",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:01:00Z",
+      "actor": "agent",
+      "event_type": "tool.requested",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-read",
+      "sha256": "e3b4a2083d6d73240401d5437e7cd74195ff7e4e05fa0d8128d06320d86b60d7"
+    },
+    {
+      "id": "unevaluated-3",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:02:00Z",
+      "actor": "agent",
+      "event_type": "tool.decided",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-read",
+      "sha256": "52d2559f9455c25004d8396cb5d2191a74a0738ebdce635e94954bbb353f73c1"
+    },
+    {
+      "id": "unevaluated-4",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:03:00Z",
+      "actor": "agent",
+      "event_type": "tool.completed",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-read",
+      "sha256": "b45fafa55844f1d3d7289c36b5a806fc659d060070240e326d6d8c8a3dda1182"
+    }
+  ],
+  "integrity_root": "bb8221f9f2d2a22829cb9149681f465702a182d274ec0408c0d0cc26301b414d",
+  "signer_key_id": "demo-ed25519-v1",
+  "signature": "mXHCKrhVI8GOrNgrnyVYZ0t0P9wdd+xivjne8bpEYm5hQ20b+U1oFN+ne2X5R5CvJcNpUF3WNS7jRmJWBWvnCw=="
+}

@@ -1,0 +1,15 @@
+{
+  "version": "chokepoint.keys/v1",
+  "issued_at": "2026-09-08T09:00:00Z",
+  "root_public_key": "Lc8V7emhuycrG+HKtkcwte5Il1D7B7lid4xfHC95e8c=",
+  "keys": [
+    {
+      "key_id": "demo-ed25519-v1",
+      "public_key": "NMVzT8ZHkg0iOJl8yq2GvIb75w7n8eqTv8TH6A1d/aU=",
+      "valid_from": "2026-01-01T00:00:00Z",
+      "valid_until": "2027-12-31T23:59:59Z",
+      "status": "active"
+    }
+  ],
+  "root_signature": "J5v+XyrL2xNGBKTnPAM9j9g5axbVctdCM63vSVU2a181XkwoHmz4gNhmpFitIyiwMKa9TRl5ZKCNY7/ZpHS0DQ=="
+}

@@ -1,0 +1,101 @@
+name: verify
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the fixture trust root's fingerprint
+        id: fp
+        run: echo "value=$(tr -d '\r\n' < fixtures/root_fingerprint.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Complete receipt passes
+        id: complete
+        uses: ./
+        with:
+          packet: fixtures/receipt.complete.json
+          trust-root: fixtures/keys.json
+          root-fingerprint: ${{ steps.fp.outputs.value }}
+      - name: Assert complete result
+        run: |
+          if [ "${{ steps.complete.outputs.result }}" != "complete" ]; then
+            echo "expected result=complete, got ${{ steps.complete.outputs.result }}" >&2
+            exit 1
+          fi
+
+      - name: Change-bound receipt with no coverage block fails as coverage-unevaluated
+        id: unevaluated
+        uses: ./
+        continue-on-error: true
+        with:
+          packet: fixtures/receipt.unevaluated.json
+          trust-root: fixtures/keys.json
+          root-fingerprint: ${{ steps.fp.outputs.value }}
+      - name: Assert coverage-unevaluated fails closed by default
+        run: |
+          if [ "${{ steps.unevaluated.outcome }}" != "failure" ]; then
+            echo "expected the previous step to fail (exit 1) without --allow-unevaluated" >&2
+            exit 1
+          fi
+          if [ "${{ steps.unevaluated.outputs.result }}" != "coverage-unevaluated" ]; then
+            echo "expected result=coverage-unevaluated, got ${{ steps.unevaluated.outputs.result }}" >&2
+            exit 1
+          fi
+
+      - name: Same receipt passes with --allow-unevaluated
+        id: unevaluated_allowed
+        uses: ./
+        with:
+          packet: fixtures/receipt.unevaluated.json
+          trust-root: fixtures/keys.json
+          root-fingerprint: ${{ steps.fp.outputs.value }}
+          allow-unevaluated: "true"
+      - name: Assert allow-unevaluated result
+        run: |
+          if [ "${{ steps.unevaluated_allowed.outputs.result }}" != "coverage-unevaluated" ]; then
+            echo "expected result=coverage-unevaluated, got ${{ steps.unevaluated_allowed.outputs.result }}" >&2
+            exit 1
+          fi
+
+      - name: Incomplete receipt fails closed by default
+        id: incomplete
+        uses: ./
+        continue-on-error: true
+        with:
+          packet: fixtures/receipt.incomplete.json
+          trust-root: fixtures/keys.json
+          root-fingerprint: ${{ steps.fp.outputs.value }}
+      - name: Assert incomplete fails closed by default
+        run: |
+          if [ "${{ steps.incomplete.outcome }}" != "failure" ]; then
+            echo "expected the previous step to fail (exit 1) without --allow-incomplete" >&2
+            exit 1
+          fi
+
+      - name: Tampered receipt always fails
+        id: tampered
+        uses: ./
+        continue-on-error: true
+        with:
+          packet: fixtures/receipt.tampered.json
+          trust-root: fixtures/keys.json
+          root-fingerprint: ${{ steps.fp.outputs.value }}
+          allow-incomplete: "true"
+          allow-unevaluated: "true"
+      - name: Assert tampered receipt is rejected even with every allow-* flag
+        run: |
+          if [ "${{ steps.tampered.outcome }}" != "failure" ]; then
+            echo "a tampered receipt must never pass, regardless of allow-* flags" >&2
+            exit 1
+          fi
+          if [ "${{ steps.tampered.outputs.result }}" != "invalid" ]; then
+            echo "expected result=invalid, got ${{ steps.tampered.outputs.result }}" >&2
+            exit 1
+          fi

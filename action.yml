@@ -1,0 +1,71 @@
+name: verify-receipt
+description: Verify a signed Chokepoint Flight Recorder receipt with a pinned trust root. Not the Go verifier.
+author: Chokepoint
+inputs:
+  previous-packet:
+    description: Optional predecessor receipt for revision-chain verification
+    required: false
+  packet:
+    description: Path to the receipt JSON
+    required: true
+  trust-root:
+    description: Path to the signed keys.json directory
+    required: true
+  root-fingerprint:
+    description: sha256:HEX pin of the offline root public key
+    required: true
+  allow-incomplete:
+    description: If true, a verified evidence_incomplete receipt exits 0. Invalid, stale, and untrusted-key still fail.
+    required: false
+    default: "false"
+  allow-unevaluated:
+    description: If true, a verified but coverage-unevaluated receipt (change-bound, no commit_coverage block) exits 0. Invalid, stale, and untrusted-key still fail.
+    required: false
+    default: "false"
+outputs:
+  revision_link:
+    description: verified, unevaluated, or not-applicable
+    value: ${{ steps.verify.outputs.revision_link }}
+  result:
+    description: complete, coverage-unevaluated, incomplete, stale, invalid, or untrusted-key
+    value: ${{ steps.verify.outputs.result }}
+  coverage:
+    description: Packet coverage_state when verification parsed the receipt
+    value: ${{ steps.verify.outputs.coverage }}
+  gaps:
+    description: Comma-separated coverage_gaps
+    value: ${{ steps.verify.outputs.gaps }}
+  commit_coverage:
+    description: "evaluated or unevaluated for a change-bound receipt; empty when the receipt is not change-bound or verification failed"
+    value: ${{ steps.verify.outputs.commit_coverage }}
+runs:
+  using: composite
+  steps:
+    - name: Install Python verifier dependency
+      shell: bash
+      run: python3 -m pip install --quiet 'cryptography>=42'
+    - name: Verify receipt
+      id: verify
+      shell: bash
+      env:
+        RECEIPT_PREVIOUS: ${{ inputs.previous-packet }}
+      run: |
+        set -euo pipefail
+        extra=()
+        if [ -n "$RECEIPT_PREVIOUS" ]; then
+          extra+=(--previous-packet "$RECEIPT_PREVIOUS")
+        fi
+        if [ "${{ inputs.allow-incomplete }}" = "true" ]; then
+          extra+=(--allow-incomplete)
+        fi
+        if [ "${{ inputs.allow-unevaluated }}" = "true" ]; then
+          extra+=(--allow-unevaluated)
+        fi
+        python3 "${{ github.action_path }}/verify_receipt.py" \
+          --packet "${{ inputs.packet }}" \
+          --trust-root "${{ inputs.trust-root }}" \
+          --root-fingerprint "${{ inputs.root-fingerprint }}" \
+          "${extra[@]}"
+branding:
+  icon: shield
+  color: purple

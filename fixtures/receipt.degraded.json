@@ -1,0 +1,64 @@
+{
+  "version": "chokepoint.flight-recorder/v1",
+  "tenant_id": "tenant_demo_7ca9",
+  "session_id": "session-degraded-001",
+  "change": {
+    "commit_coverage": {
+      "list_complete": true,
+      "commits": [
+        {
+          "sha": "0123456789abcdef0123456789abcdef01234567",
+          "state": "observed"
+        }
+      ],
+      "listed_count": 1
+    },
+    "repository_id": "repo_demo_42",
+    "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+    "pull_request_number": 42
+  },
+  "agent_id": "agent_demo_reviewer",
+  "agent_type": "coding-agent",
+  "provider": "demo",
+  "started_at": "2026-09-08T09:00:00Z",
+  "last_activity": "2026-09-08T09:07:00Z",
+  "coverage_state": "evidence_incomplete",
+  "coverage_gaps": [
+    "guard_degraded"
+  ],
+  "event_digests": [
+    {
+      "id": "degraded-1",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:00:00Z",
+      "actor": "agent",
+      "event_type": "tool.requested",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-degraded",
+      "sha256": "6cc8f343d7df5ce87ad8e6951e82c9731d019edd459b336cac545bf4f9718ab1"
+    },
+    {
+      "id": "degraded-2",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:01:00Z",
+      "actor": "agent",
+      "event_type": "tool.decided",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-degraded",
+      "sha256": "7d063eed89834a8750d34ce246a7cbfa9389a2e5ab69c988fc97a1bca6f09177"
+    },
+    {
+      "id": "degraded-3",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:02:00Z",
+      "actor": "agent",
+      "event_type": "tool.completed",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-degraded",
+      "sha256": "e45537a430f7ee6ee1d7307b0fe4bf7288854d7f4380b16b36e6c12ad30b5913"
+    }
+  ],
+  "integrity_root": "b19f5a69c84722a3ce72e577830129f759f28c1933527e7091c4505a8d563aa5",
+  "signer_key_id": "demo-ed25519-v1",
+  "signature": "XaS+AW+3lyiqoAf8tKoYBxr5sgL6wAhZmwDK4CdXtqSvqGzr0lacqrRP8QTQfpBk4IOM4CbpOXpWMYjzlJYACA=="
+}

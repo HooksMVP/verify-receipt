@@ -1,0 +1,52 @@
+{
+  "version": "chokepoint.flight-recorder/v1",
+  "tenant_id": "tenant_demo_7ca9",
+  "session_id": "session-incomplete-001",
+  "change": {
+    "commit_coverage": {
+      "list_complete": true,
+      "commits": [
+        {
+          "sha": "0123456789abcdef0123456789abcdef01234567",
+          "state": "observed"
+        }
+      ],
+      "listed_count": 1
+    },
+    "repository_id": "repo_demo_42",
+    "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+    "pull_request_number": 42
+  },
+  "agent_id": "agent_demo_reviewer",
+  "agent_type": "coding-agent",
+  "provider": "demo",
+  "started_at": "2026-09-08T09:00:00Z",
+  "last_activity": "2026-09-08T09:07:00Z",
+  "coverage_state": "evidence_incomplete",
+  "coverage_gaps": [
+    "tool_completion_missing"
+  ],
+  "event_digests": [
+    {
+      "id": "incomplete-1",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:00:00Z",
+      "actor": "agent",
+      "event_type": "run.started",
+      "sha256": "69c8ac2a9b7d212b14e5ddbf7eff31aa1bf91362113766d6c9c5ad5ec9d58060"
+    },
+    {
+      "id": "incomplete-2",
+      "source": "demo-agent",
+      "occurred_at": "2026-09-08T09:01:00Z",
+      "actor": "agent",
+      "event_type": "tool.requested",
+      "tool_name": "repository.read",
+      "tool_call_id": "call-incomplete",
+      "sha256": "5bcb428e7eed26354b1a082e87023588e29c1d1adb268a9d34c4096e475f9658"
+    }
+  ],
+  "integrity_root": "4c5f52a53fc74f667e843311d6d76b320878798c535ec769a50210a8516c0233",
+  "signer_key_id": "demo-ed25519-v1",
+  "signature": "vk79BLev54ZOsmbRoGVHQIZcHTbc1qCNddAzsJAs4X3ZNtN6IjkoXtPrj7eKCSO0DDliEkm5kRvDVzSIsjcvBw=="
+}
